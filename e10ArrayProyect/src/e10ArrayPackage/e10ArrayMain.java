@@ -20,6 +20,7 @@ public class e10ArrayMain {
         double[] arrayB = Arrays.copyOfRange(arrayA, 0, 20);
         Arrays.fill(arrayB, 10, 20, 0.5);
         System.out.println(Arrays.toString(arrayB));
+        
     }
 
 }

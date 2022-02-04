@@ -6,7 +6,7 @@ public class E12PersonaMain {
         Persona objeto = new Persona();
         objeto.crearPersona();
         objeto.calcularEdad();
-        System.out.println("Menor de 29: " + objeto.menorQue(18));
+        System.out.println("Menor de 18: " + objeto.menorQue(18));
         System.out.println("");
         objeto.mostrarPersona();
 

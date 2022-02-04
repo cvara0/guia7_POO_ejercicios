@@ -86,8 +86,8 @@ nacimiento (Tipo Date), constructor vacío, constructor parametrizado, get y set
     
     public void calcularEdad(){
     Date fechaActual=new Date();
-    int edad;
-    edad=(int)(((fechaActual.getTime()-this.fechaNacimiento.getTime())/3.154E+10)+1900+1);
+     
+    int edad=(int)(((fechaActual.getTime()-this.fechaNacimiento.getTime())/3.154E+10)+1900+1);
         System.out.println("Su edad es: "+edad);
     }
     
