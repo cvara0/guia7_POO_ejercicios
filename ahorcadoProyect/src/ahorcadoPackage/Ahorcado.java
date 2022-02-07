@@ -14,7 +14,7 @@ public class Ahorcado {
     private int letrasEncontradas;
     private int jugadasMax;
     private char[] palabraIncompleta;// solo para ver la palabra incompleta
-
+    //private String[] muniequito={"    O  ","  __|__","  | | |","  o | o","  __|__","  |   |"," _|   |_"};
     /*Constructores, tanto el vacío como el parametrizado.*/
     public Ahorcado() {
     }
@@ -61,7 +61,6 @@ public class Ahorcado {
         Scanner entrada = new Scanner(System.in, "ISO-8859-1").useDelimiter("\n").useLocale(Locale.US);
         System.out.print("Ingrese palabra: ");
         String palabra = entrada.next();
-        //this.palabraABuscar = new char[palabra.length()];
         this.palabraABuscar = palabra.toCharArray();
         this.palabraIncompleta=new char[this.palabraABuscar.length];
         Arrays.fill(this.palabraIncompleta, '_');
@@ -101,7 +100,7 @@ public class Ahorcado {
         if (Arrays.binarySearch(palabra, letra.charAt(0)) < 0) {
             
             this.jugadasMax--;
-            System.out.printf("Letras (encontradas, faltantes): (%d,%d)\n", this.letrasEncontradas, this.palabraABuscar.length - this.letrasEncontradas);
+            System.out.printf("Letras (encontradas, faltantes): (%d,%d)\n", this.letrasEncontradas, this.palabraABuscar.length - this.letrasEncontradas-2);
             return false;
         } else {
             char[] repetidas=Arrays.copyOf(this.palabraIncompleta,this.palabraIncompleta.length);
@@ -114,10 +113,11 @@ public class Ahorcado {
                     //encontrada++;
                 }
             }
-            System.out.printf("Letras (encontradas, faltantes): (%d,%d)\n", this.letrasEncontradas, this.palabraABuscar.length - this.letrasEncontradas);
+            System.out.printf("Letras (encontradas, faltantes): (%d,%d)\n", this.letrasEncontradas, this.palabraABuscar.length - this.letrasEncontradas-2);
 
-            if (this.letrasEncontradas == palabra.length) {
+            if (this.letrasEncontradas == palabra.length-2) {
                 System.out.println("Felicidades!! ha ganado!!");
+                System.out.println("La palabra es: *"+Arrays.toString(this.palabraABuscar)+"*");
                 return true;
             }
             return false;
@@ -138,9 +138,7 @@ public class Ahorcado {
             if(this.palabraABuscar[i]==letra.charAt(0)){
                 this.palabraIncompleta[i]=letra.charAt(0);
             }
-        }
-        System.out.println(Arrays.toString(this.palabraIncompleta));
-        
+        }    
     }
 
     /*Método juego(): el método juego se encargará de llamar todos los métodos
@@ -155,11 +153,16 @@ public class Ahorcado {
      */
     public void juego()   {
         Scanner entrada = new Scanner(System.in, "ISO-8859-1").useDelimiter("\n").useLocale(Locale.US);
-        String letra;
+        String letra="";
         boolean encontro;
+        this.palabraIncompleta[0]=this.palabraABuscar[0];
+        this.palabraIncompleta[this.palabraABuscar.length-1]=this.palabraABuscar[this.palabraABuscar.length-1];
+        
+        
         do {
  
             System.out.println("------------------------------");
+            System.out.println(Arrays.toString(this.palabraIncompleta));
             System.out.print("Ingrese una letra: ");
             letra = entrada.next();
             System.out.println("Longitud de palabra: " + this.palabraABuscar.length);
@@ -176,8 +179,6 @@ public class Ahorcado {
         } while (!encontro && this.jugadasMax != 0);
     }
 }
-
-//tener en cuenta letras ingresadas repetidas
 
 /*Juego Ahorcado: Crear una clase Ahorcado (como el juego), la cual deberá contener
 como atributos, un vector con la palabra a buscar, la cantidad de letras encontradas y
