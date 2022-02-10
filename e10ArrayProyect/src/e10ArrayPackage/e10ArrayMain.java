@@ -20,8 +20,11 @@ public class e10ArrayMain {
         double[] arrayB = Arrays.copyOfRange(arrayA, 0, 20);
         Arrays.fill(arrayB, 10, 20, 0.5);
         System.out.println(Arrays.toString(arrayB));
-        
+  
     }
+    /*System.arraycopy(arregloA, 0, arregloB, 0, arregloB.length -10); 
+    Arrays.fill(arregloB, 10, 20, 0.5); 
+    System.out.println("EL vector b es"+Arrays.toString(arregloB)); */
 
 }
 
@@ -32,12 +35,13 @@ pantalla. Luego, el arreglo A se debe ordenar de menor a mayor y copiar los prim
 10 números ordenados al arreglo B de 20 elementos, y rellenar los 10 últimos
 elementos con el valor 0.5. Mostrar los dos arreglos resultantes: el ordenado de 50
 elementos y el combinado de 20
-
+*******************************************************
 Usando DecimalFormat
 
  DecimalFormat df = new DecimalFormat("#.00");
  System.out.println(df.format(number));
  Salida : 1.42
+*******************************************************
 Usando String.Format
 
 System.out.println(String.format("%.2f", number));
@@ -50,6 +54,7 @@ Mediante Math.Round() donde la cantidad de ceros es la cantidad de decimales a l
 
 System.out.println((double)Math.round(number * 100d) / 100d);
  Salida : 1.42
+********************************************************
 Usando la clase BigDecimal , usando el método setScale que recibe dos parámetros la cantidad de decimales a limitar y el modo de redondeo
 
 BigDecimal bd = new BigDecimal(number);

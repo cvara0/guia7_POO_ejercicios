@@ -1,6 +1,5 @@
 package ahorcadoPackage;
 
-
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
@@ -14,7 +13,9 @@ public class Ahorcado {
     private int letrasEncontradas;
     private int jugadasMax;
     private char[] palabraIncompleta;// solo para ver la palabra incompleta
+    private int dificultad;
     //private String[] muniequito={"    O  ","  __|__","  | | |","  o | o","  __|__","  |   |"," _|   |_"};
+
     /*Constructores, tanto el vacío como el parametrizado.*/
     public Ahorcado() {
     }
@@ -51,6 +52,7 @@ public class Ahorcado {
     public void setJugadasMax(int jugadasMax) {
         this.jugadasMax = jugadasMax;
     }
+
     // 
     /*Metodo crearJuego(): le pide la palabra al usuario y cantidad de jugadas máxima.
     Con la palabra del usuario, pone la longitud de la palabra, como la longitud del vector.
@@ -59,15 +61,29 @@ public class Ahorcado {
     el valor que ingresó el usuario y encontradas en 0.*/
     public void crearJuego() {
         Scanner entrada = new Scanner(System.in, "ISO-8859-1").useDelimiter("\n").useLocale(Locale.US);
-        System.out.print("Ingrese palabra: ");
-        String palabra = entrada.next();
+        this.dificultad = 1;
+        String palabra;
+        do {
+            System.out.print("Ingrese palabra (mayor de 3 letras): ");
+            palabra = entrada.next();
+            if (palabra.length() < 4) {
+                System.out.println("Error, ingrese palabra con mas de 3 letras");
+            }
+        } while (palabra.length() < 4);
         this.palabraABuscar = palabra.toCharArray();
-        this.palabraIncompleta=new char[this.palabraABuscar.length];
+        this.palabraIncompleta = new char[this.palabraABuscar.length];
         Arrays.fill(this.palabraIncompleta, '_');
         System.out.print("Ingrese cantidad de jugadas máxima: ");
         this.jugadasMax = entrada.nextInt();
         
-        
+        do {
+            System.out.print("Ingrese nivel de dificultad (1-3): ");
+            this.dificultad = entrada.nextInt();
+            if (this.dificultad < 1 || this.dificultad > 3) {
+                System.out.println("Error, ingrese dificultad entre 1 y 3");
+            }
+        } while (this.dificultad < 1 || this.dificultad > 3);
+
     }
 
     /*Método longitud(): muestra la longitud de la palabra que se debe encontrar. Nota:
@@ -93,52 +109,37 @@ public class Ahorcado {
     devolver true si la letra estaba y false si la letra no estaba, ya que, cada vez que se
     busque una letra que no esté, se le restará uno a sus oportunidades.*/
     public boolean encontradas(String letra) {
-        int encontrada = 0;
 
         char[] palabra = Arrays.copyOf(this.palabraABuscar, this.palabraABuscar.length);
         Arrays.sort(palabra);
         if (Arrays.binarySearch(palabra, letra.charAt(0)) < 0) {
-            
             this.jugadasMax--;
-            System.out.printf("Letras (encontradas, faltantes): (%d,%d)\n", this.letrasEncontradas, this.palabraABuscar.length - this.letrasEncontradas-2);
             return false;
         } else {
-            char[] repetidas=Arrays.copyOf(this.palabraIncompleta,this.palabraIncompleta.length);
-                Arrays.sort(repetidas);
-            for (int i = 0; i < palabra.length; i++) {
-                
-                if (palabra[i] == letra.charAt(0) && Arrays.binarySearch(repetidas, letra.charAt(0)) < 0) {
-                    
-                    this.letrasEncontradas++;
-                    //encontrada++;
-                }
-            }
-            System.out.printf("Letras (encontradas, faltantes): (%d,%d)\n", this.letrasEncontradas, this.palabraABuscar.length - this.letrasEncontradas-2);
-
-            if (this.letrasEncontradas == palabra.length-2) {
+            char[] repetidas = Arrays.copyOf(this.palabraIncompleta, this.palabraIncompleta.length);
+            Arrays.sort(repetidas);
+            if (Arrays.equals(this.palabraIncompleta, this.palabraABuscar)) {
                 System.out.println("Felicidades!! ha ganado!!");
-                System.out.println("La palabra es: *"+Arrays.toString(this.palabraABuscar)+"*");
+                System.out.println("La palabra es: *" + Arrays.toString(this.palabraABuscar) + "*\n");
                 return true;
-            }
+            } 
             return false;
         }
     }
 
     /*Método intentos(): para mostrar cuantas oportunidades le queda al jugador.*/
     public void intentos() {
-
         System.out.printf("Le quedan %d oportunidades\n", this.jugadasMax);
-
     }
-    
+
     //metodo frase incompleta, lo cree para mostrar la frase incompleta
-    public void palabraIncompleta(String letra){
-    
+    public void palabraIncompleta(String letra) {
+
         for (int i = 0; i < this.palabraABuscar.length; i++) {
-            if(this.palabraABuscar[i]==letra.charAt(0)){
-                this.palabraIncompleta[i]=letra.charAt(0);
+            if (this.palabraABuscar[i] == letra.charAt(0)) {
+                this.palabraIncompleta[i] = letra.charAt(0);
             }
-        }    
+        }
     }
 
     /*Método juego(): el método juego se encargará de llamar todos los métodos
@@ -151,27 +152,51 @@ public class Ahorcado {
     Número de letras (encontradas, faltantes): (3,4)
     Número de oportunidades restantes: 4
      */
-    public void juego()   {
+    public void juego() {
         Scanner entrada = new Scanner(System.in, "ISO-8859-1").useDelimiter("\n").useLocale(Locale.US);
-        String letra="";
+        String letra;
         boolean encontro;
-        this.palabraIncompleta[0]=this.palabraABuscar[0];
-        this.palabraIncompleta[this.palabraABuscar.length-1]=this.palabraABuscar[this.palabraABuscar.length-1];
-        
-        
+    
+        switch (this.dificultad) {
+
+            case 1:
+                this.palabraIncompleta[0] = this.palabraABuscar[0];
+                this.palabraIncompleta[this.palabraABuscar.length - 1] = this.palabraABuscar[this.palabraABuscar.length - 1];
+                this.palabraIncompleta[this.palabraIncompleta.length / 2] = this.palabraABuscar[this.palabraABuscar.length / 2];
+                break;
+            case 2:
+                this.palabraIncompleta[0] = this.palabraABuscar[0];
+                this.palabraIncompleta[this.palabraABuscar.length - 1] = this.palabraABuscar[this.palabraABuscar.length - 1];
+                break;
+            case 3:
+                this.palabraIncompleta[0] = this.palabraABuscar[0];
+                break;
+        }
+
         do {
- 
+
             System.out.println("------------------------------");
+            //
             System.out.println(Arrays.toString(this.palabraIncompleta));
+            System.out.println("");
             System.out.print("Ingrese una letra: ");
             letra = entrada.next();
-            System.out.println("Longitud de palabra: " + this.palabraABuscar.length);
+            System.out.println("");
             System.out.print("Mensaje: ");
             buscar(letra);
-            encontro = encontradas(letra);
+            System.out.println("");
+
             palabraIncompleta(letra);
+            encontro = encontradas(letra);
+            int encontradas=0;
+            for (int i = 0; i < this.palabraABuscar.length; i++) {
+                if(this.palabraABuscar[i]==this.palabraIncompleta[i])
+                    encontradas++;
+            }
+            System.out.printf("Letras (encontradas, faltantes): (%d,%d)\n", encontradas, this.palabraABuscar.length - encontradas);
+            
             if (this.jugadasMax == 0) {
-                System.out.println("No posee más intentos, mejor suerte la próxima!"); 
+                System.out.println("No posee más intentos, mejor suerte la próxima!");
             } else {
                 System.out.println("Intentos restantes: " + this.jugadasMax);
             }
